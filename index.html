@@ -1,1 +1,135 @@
-Hello World
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoppinglist</title>
+
+    <style type="text/css">
+
+		.mod-article {
+			max-width: 800px;
+			margin: auto;
+		}
+
+	    .mod-article__item {
+	    	width: 100%;
+	    	float: left;
+	    	padding: 50px;
+	    	box-sizing: border-box;
+	    	text-decoration: none;
+	    }
+
+		.mod-article__price,
+		.mod-article__headline {
+			font-family: Verdana;
+			font-size: 20px;
+			text-transform: uppercase;
+			line-height: 1.2;
+			color: #0c2959;
+			display: block;
+		}
+
+		.mod-article__price {
+			font-family: Arial;
+			font-size: 16px;
+			color: #0d5d68;
+			margin-top: 10px;
+		}
+
+	    .mod-article__image {
+	    	width: 100%;	
+	    	height: auto;	
+	    }
+
+	    .mod-article__brand {
+	    	display: block;
+	    	margin-bottom: 20px;
+	    }
+
+
+	    @media only screen and (min-width : 500px) {
+			.mod-article__item {
+		    	width: 50%;
+		    }
+		}
+
+    </style>
+  </head>
+  <body>
+    
+	<div class="mod-article">
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="YO122OAFP-Q11">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="A1822G03Y-K11">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="ur622h01g-k11">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="bi782d00i-q11">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+	</div>
+	
+	<script type="text/javascript">
+		var getJSON = function(url, callback) {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('GET', url, true);
+		    xhr.responseType = 'json';
+		    xhr.onload = function() {
+		      var status = xhr.status;
+		      if (status == 200) {
+		        callback(null, xhr.response);
+		      } else {
+		        callback(status);
+		      }
+		    };
+		    xhr.send();
+		};
+
+		var article = document.getElementsByClassName('js-article');
+		var articleHeadline = document.getElementsByClassName('js-article-headline');
+		var articleImage = document.getElementsByClassName('js-article-image');
+		var articlePrice = document.getElementsByClassName('js-article-price');
+		var articleBrand = document.getElementsByClassName('js-article-brand');
+		
+		var articleData = [];
+		for(var i=0;typeof(article[i])!='undefined';articleData.push(article[i++]));
+
+		articleData.forEach(function(eachArticle, index) {
+		    getJSON('https://api.zalando.com/articles/' + eachArticle.dataset.article,
+			function(err, data) {
+				var brand = data.brand.logoUrl;
+				var name = data.name;
+				var price = data.units[0].price.formatted;
+				var showUrl = data.shopUrl;
+				var image = data.media.images[0].largeUrl;
+
+				article[index].href = showUrl
+				articleHeadline[index].innerHTML = name
+				articleImage[index].src = image
+				articlePrice[index].innerHTML = price
+				articleBrand[index].src = brand
+			});
+
+		});
+	</script>
+  </body>
+</html>
