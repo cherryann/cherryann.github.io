@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shoppinglist</title>
+    <title>zalando article</title>
 
     <style type="text/css">
 
@@ -21,13 +21,18 @@
 	    }
 
 		.mod-article__price,
-		.mod-article__headline {
+		.mod-article__headline,
+		.mod-article__category {
 			font-family: Verdana;
 			font-size: 20px;
 			text-transform: uppercase;
 			line-height: 1.2;
 			color: #0c2959;
 			display: block;
+		}
+
+		.mod-article__category {
+			clear: both;
 		}
 
 		.mod-article__price {
@@ -38,8 +43,8 @@
 		}
 
 	    .mod-article__image {
-	    	width: 100%;	
-	    	height: auto;	
+	    	width: 100%;
+	    	height: auto;
 	    }
 
 	    .mod-article__brand {
@@ -57,37 +62,60 @@
     </style>
   </head>
   <body>
-    
+
 	<div class="mod-article">
-		<a href="#" target="_blank" class="mod-article__item js-article" data-article="YO122OAFP-Q11">
+		<h2 class="mod-article__category">Schuhe</h2>
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="pi912ba0k-k11">
 			<img src="" class="mod-article__image js-article-image" />
 			<img src="" class="mod-article__brand js-article-brand" />
 			<span class="mod-article__headline js-article-headline"></span>
 			<span class="mod-article__price js-article-price"></span>
 		</a>
 
-		<a href="#" target="_blank" class="mod-article__item js-article" data-article="A1822G03Y-K11">
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="ad112b0h9-c11">
 			<img src="" class="mod-article__image js-article-image" />
 			<img src="" class="mod-article__brand js-article-brand" />
 			<span class="mod-article__headline js-article-headline"></span>
 			<span class="mod-article__price js-article-price"></span>
 		</a>
 
-		<a href="#" target="_blank" class="mod-article__item js-article" data-article="ur622h01g-k11">
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="ti315b01h-c11">
 			<img src="" class="mod-article__image js-article-image" />
 			<img src="" class="mod-article__brand js-article-brand" />
 			<span class="mod-article__headline js-article-headline"></span>
 			<span class="mod-article__price js-article-price"></span>
 		</a>
 
-		<a href="#" target="_blank" class="mod-article__item js-article" data-article="bi782d00i-q11">
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="hu315a00n-802">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+
+		<h2 class="mod-article__category">Jacken</h2>
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="le222h00v-q11">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="ja222h0aq-k11">
+			<img src="" class="mod-article__image js-article-image" />
+			<img src="" class="mod-article__brand js-article-brand" />
+			<span class="mod-article__headline js-article-headline"></span>
+			<span class="mod-article__price js-article-price"></span>
+		</a>
+
+		<a href="#" target="_blank" class="mod-article__item js-article" data-article="bh622ha0z-n11">
 			<img src="" class="mod-article__image js-article-image" />
 			<img src="" class="mod-article__brand js-article-brand" />
 			<span class="mod-article__headline js-article-headline"></span>
 			<span class="mod-article__price js-article-price"></span>
 		</a>
 	</div>
-	
+
 	<script type="text/javascript">
 		var getJSON = function(url, callback) {
 		    var xhr = new XMLHttpRequest();
@@ -122,11 +150,11 @@
 				var showUrl = data.shopUrl;
 				var image = data.media.images[0].largeUrl;
 
-				article[index].href = showUrl
-				articleHeadline[index].innerHTML = name
-				articleImage[index].src = image
-				articlePrice[index].innerHTML = price
-				articleBrand[index].src = brand
+				article[index].href = showUrl;
+				articleHeadline[index].innerHTML = name;
+				articleImage[index].src = image;
+				articlePrice[index].innerHTML = price;
+				articleBrand[index].src = brand;
 			});
 
 		});
