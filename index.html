@@ -1,62 +1,106 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zalando article</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>zalando article</title>
 
-    <style type="text/css">
-
-		.mod-article {
-			max-width: 800px;
-			margin: auto;
+	<style type="text/css">
+		body {
+			padding: 0;
+			margin: 0;
+			background: #f5f5f5;
 		}
 
-	    .mod-article__item {
-	    	width: 100%;
-	    	float: left;
-	    	padding: 50px;
-	    	box-sizing: border-box;
-	    	text-decoration: none;
-	    }
+		.mod-article {
+			margin: 30px;
+		}
 
+		.mod-article__item {
+			width: 100%;
+			float: left;
+			padding: 20px;
+			box-sizing: border-box;
+			text-decoration: none;
+			position: relative;
+		}
+
+		.mod-article__item:hover .mod-article__brand {
+			opacity: 0;
+		}
+
+		.mod-article__item:hover .mod-article__headline {
+			color: #41a485;
+		}
+
+		.mod-article__item:hover  .mod-article__image {
+			border: 3px solid #179bd4;
+		}
+
+		header,
 		.mod-article__price,
 		.mod-article__headline,
 		.mod-article__category {
-			font-family: Verdana;
+			font-family: Tahoma, Geneva, sans-serif;
 			font-size: 16px;
 			text-transform: uppercase;
 			line-height: 1.2;
-			color: #0c2959;
+			color: #191919;
 			display: block;
+			transition: 0.3s color ease;
 		}
 
 		.mod-article__category {
 			clear: both;
+			font-size: 20px;
+			margin: 0 20px;
+			padding: 0;
+			color: #191919;
+			position: relative;
 		}
 
 		.mod-article__price {
-			font-family: Arial;
+			font-family: Tahoma, Geneva, sans-serif;
 			font-size: 14px;
-			color: #0d5d68;
+			color: #179bd4;
 			margin-top: 10px;
 		}
 
-	    .mod-article__image {
-	    	width: 100%;
-	    	height: auto;
-	    }
+		.mod-article__image {
+			width: 100%;
+			height: auto;
+			margin-bottom: 10px;
+			border: 3px solid #eaeaea;
+			transition: 0.3s border ease;
+		}
 
-	    .mod-article__brand {
-	    	display: block;
-	    	margin-bottom: 20px;
-	    }
+		.mod-article__brand {
+			display: block;
+			position: absolute;
+			opacity: 1;
+			top: 10px;
+			right: 10px;
+			transition: 0.3s opacity ease-out;
+			box-shadow: 0 5px 15px 0 rgba(0,0,0,0.15);
+		}
 
-
-	    @media only screen and (min-width : 500px) {
+		@media only screen and ( min-width: 800px ) {
 			.mod-article__item {
-		    	width: 33.33%;
-		    }
+				width: 50%;
+			}
+		}
+
+		@media only screen and ( min-width: 1000px ) {
+			.mod-article__item {
+				width: 25%;
+			}
+		}
+
+		header {
+			padding: 50px;
+			font-size: 25px;
+			color: white;
+			background: linear-gradient(to right,#42a483 0,#41a485 29%,#33a19f 51%,#209dc3 71%,#179bd4 100%);
 		}
 
 		footer {
@@ -65,80 +109,84 @@
 			width: 100%;
 		}
 
-    </style>
-  </head>
-  <body>
-	<div class="mod-article" id="modArticle"></div>
+	</style>
+</head>
+<body>
+<header>
+	<!--Headertext-->
+</header>
+<div class="mod-article" id="modArticle"></div>
 
-	<script type="text/javascript">
-		var staticData = {
-			"staticData": [{
-				"category": "Schuhe",
-				"article": ["pi912ba0k-k11", "ad112b0h9-c11", "ti315b01h-c11", "hu315a00n-802"]
-			},
-			{
-				"category": "Jacken",
-				"article": ["le222h00v-q11", "ja222h0aq-k11", "bh622ha0z-n11"]
-			}]
-		};
+<script type="text/javascript">
+	var staticData = {
+		"staticData": [{
+			"category": "Schuhe",
+			"article": ["pi912ba0k-k11", "ad112b0h9-c11", "ti315b01h-c11", "hu315a00n-802"]
+		},
+		{
+			"category": "Jacken",
+			"article": ["le222h00v-q11", "bh622ha0z-n11"]
+		}]
+	};
 
-		var getJSON = function(url, callback) {
-		    var xhr = new XMLHttpRequest();
-		    xhr.open('GET', url, true);
-		    xhr.responseType = 'json';
-		    xhr.onload = function() {
-		      var status = xhr.status;
-		      if (status == 200) {
-		        callback(null, xhr.response);
-		      } else {
-		        callback(status);
-		      }
-		    };
-		    xhr.send();
-		};
-
-		var article = document.getElementsByClassName('js-article');
-		var modArticle = document.getElementById('modArticle');
-		var articleHeadline = document.getElementsByClassName('js-article-headline');
-		var articleImage = document.getElementsByClassName('js-article-image');
-		var articlePrice = document.getElementsByClassName('js-article-price');
-		var articleBrand = document.getElementsByClassName('js-article-brand');
-		var articleData = [];
-
-		for (i = 0; i < staticData.staticData.length; i++) {
-			var createCategory = '<h2 class="mod-article__category">'+ staticData.staticData[i].category +'</h2>'
-			modArticle.innerHTML += createCategory;
-    	for (k = 0; k < staticData.staticData[i].article.length; k++) {
-			var createArticle = '<a href="#" target="_blank" class="mod-article__item js-article" data-article="'+ staticData.staticData[i].article[k] +'">' +
-				'<img src="" class="mod-article__image js-article-image" />' +
-				'<img src="" class="mod-article__brand js-article-brand" />' +
-				'<span class="mod-article__headline js-article-headline"></span>' +
-				'<span class="mod-article__price js-article-price"></span>' +
-				'</a>';
-			modArticle.innerHTML += createArticle;
+	var getJSON = function (url, callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url, true);
+		xhr.responseType = 'json';
+		xhr.onload = function () {
+			var status = xhr.status;
+			if (status == 200) {
+				callback(null, xhr.response);
+			} else {
+				callback(status);
 			}
-   		}
+		};
+		xhr.send();
+	};
 
-   		setTimeout(function(){ 
-			for(var i=0;typeof(article[i])!='undefined';articleData.push(article[i++]));
+	var article = document.getElementsByClassName('js-article');
+	var modArticle = document.getElementById('modArticle');
+	var articleHeadline = document.getElementsByClassName('js-article-headline');
+	var articleImage = document.getElementsByClassName('js-article-image');
+	var articlePrice = document.getElementsByClassName('js-article-price');
+	var articleBrand = document.getElementsByClassName('js-article-brand');
+	var articleData = [];
 
-			articleData.forEach(function(eachArticle, index) {
-			    getJSON('https://api.zalando.com/articles/' + eachArticle.dataset.article,
-				function(err, data) {
-					var brand = data.brand.logoUrl;
-					var name = data.name;
-					var price = data.units[0].price.formatted;
-					var showUrl = data.shopUrl;
-					var image = data.media.images[0].largeUrl;
+	for (i = 0; i < staticData.staticData.length; i++) {
+		var createCategory = '<h2 class="mod-article__category">' + staticData.staticData[i].category + '</h2>';
+		modArticle.innerHTML += createCategory;
 
-					article[index].href = showUrl;
-					articleHeadline[index].innerHTML = name;
-					articleImage[index].src = image;
-					articlePrice[index].innerHTML = price;
-					articleBrand[index].src = brand;
-				});
-			});
+		for (k = 0; k < staticData.staticData[i].article.length; k++) {
+			var createArticle = '<a href="#" target="_blank" class="mod-article__item js-article" data-article="' + staticData.staticData[i].article[k] + '">' +
+					'<img src="" class="mod-article__image js-article-image" />' +
+					'<img src="" class="mod-article__brand js-article-brand" />' +
+					'<span class="mod-article__headline js-article-headline"></span>' +
+					'<span class="mod-article__price js-article-price"></span>' +
+					'</a>';
+			modArticle.innerHTML += createArticle;
+		}
+	}
+
+	setTimeout(function () {
+		for (var i = 0; typeof(article[i]) != 'undefined'; articleData.push(article[i++]));
+
+		articleData.forEach(function (eachArticle, index) {
+			getJSON('https://api.zalando.com/articles/' + eachArticle.dataset.article,
+					function (err, data) {
+						var brand = data.brand.logoUrl;
+						var name = data.name;
+						var price = data.units[0].price.formatted;
+						var showUrl = data.shopUrl;
+						var image = data.media.images[0].largeUrl;
+
+						article[index].href = showUrl;
+						articleHeadline[index].innerHTML = name;
+						articleImage[index].src = image;
+						articlePrice[index].innerHTML = price;
+						articleBrand[index].src = brand;
+					});
 		});
-	</script>
-  </body>
+	});
+</script>
+</body>
 </html>
