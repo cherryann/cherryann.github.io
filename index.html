@@ -6,6 +6,9 @@
 	<title>template</title>
 
 	<style type="text/css">
+		@import url(https://fonts.googleapis.com/css?family=Raleway:500);
+		@import url(https://fonts.googleapis.com/css?family=Oswald);
+
 		body {
 			padding: 0;
 			margin: 0;
@@ -25,6 +28,18 @@
 			position: relative;
 		}
 
+		@media only screen and ( min-width: 800px ) {
+			.mod-article__item {
+				width: 50%;
+			}
+		}
+
+		@media only screen and ( min-width: 1000px ) {
+			.mod-article__item {
+				width: 25%;
+			}
+		}
+
 		.mod-article__item:hover .mod-article__brand {
 			opacity: 0;
 		}
@@ -41,7 +56,7 @@
 		.mod-article__price,
 		.mod-article__headline,
 		.mod-article__category {
-			font-family: Tahoma, Geneva, sans-serif;
+			font-family: 'Raleway', Arial, sans-serif;
 			font-size: 16px;
 			text-transform: uppercase;
 			line-height: 1.2;
@@ -51,7 +66,7 @@
 		}
 
 		.mod-article__category {
-			clear: both;
+			font-family: 'Oswald', Arial, sans-serif;
 			font-size: 20px;
 			margin: 0 20px;
 			padding: 0;
@@ -60,8 +75,8 @@
 		}
 
 		.mod-article__price {
-			font-family: Tahoma, Geneva, sans-serif;
-			font-size: 14px;
+			font-family: 'Oswald', Arial, sans-serif;
+			font-size: 20px;
 			color: #179bd4;
 			margin-top: 10px;
 		}
@@ -84,50 +99,108 @@
 			box-shadow: 0 5px 15px 0 rgba(0,0,0,0.15);
 		}
 
-		@media only screen and ( min-width: 800px ) {
-			.mod-article__item {
-				width: 50%;
-			}
-		}
-
-		@media only screen and ( min-width: 1000px ) {
-			.mod-article__item {
-				width: 25%;
-			}
-		}
-
 		header {
 			padding: 50px;
 			font-size: 25px;
 			color: white;
+			margin: auto;
 			background: linear-gradient(to right,#42a483 0,#41a485 29%,#33a19f 51%,#209dc3 71%,#179bd4 100%);
 		}
 
 		footer {
-			position: fixed;
-			bottom: 0;
 			width: 100%;
+			height: 30px;
+			background: linear-gradient(to right,#42a483 0,#41a485 29%,#33a19f 51%,#209dc3 71%,#179bd4 100%);
+		}
+
+		.logo {
+			font-family: 'Raleway', Arial, sans-serif;
+			position: relative;
+			left: 50%;
+			margin-left: -142px;
+			margin-bottom: 30px;
+			color: #fff;
+			max-width: 285px;
+			width: 100%;
+			text-align: center;
+			font-size: 16px;
+			-webkit-box-sizing: content-box;
+			box-sizing: content-box;
+		}
+		.logo h1,
+		.logo h5 {
+			margin: 0;
+			text-transform: uppercase;
+		}
+		.logo h1 {
+			font-family: 'Oswald', Arial, sans-serif;
+			font-size: 2.8em;
+			line-height: 50px;
+			position: relative;
+			color: #fff;
+			text-align: center;
+			margin: 0 0 7px;
+		}
+		.logo h5 {
+			margin: 0 40px;
+			padding: 5px 0;
+			font-weight: 500;
+			border-top: 4px solid #fff;
+			border-bottom: 4px solid #fff;
+			white-space: nowrap;
+		}
+		.logo h5:after {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 0;
+			top: 100%;
+			left: 50%;
+			-webkit-transform: translate(-50%);
+			transform: translate(-50%);
+			border-width: 20px 30px;
+			border-style: solid;
+			border-color: #fff #fff transparent #fff;
+		}
+		.logo h6 {
+			margin: 0 0 2px;
+			position: relative;
+			text-transform: uppercase;
+			letter-spacing: 5px;
+		}
+
+		.clearfix:after {
+			content: ".";
+			clear: both;
+			display: block;
+			visibility: hidden;
+			height: 0;
 		}
 
 	</style>
 </head>
 <body>
 <header>
-	<!--Headertext-->
+	<div class="logo">
+		<h6>Est. 2017</h6>
+		<h1>Ragletter</h1>
+		<h5>Unsere Auswahl. Für Dich.</h5>
+	</div>
 </header>
 <div class="mod-article" id="modArticle"></div>
+<footer></footer>
 
 <script type="text/javascript">
-	var staticData = {
-		"staticData": [{
+	var staticData = [
+		{
 			"category": "Schuhe",
 			"article": ["pi912ba0k-k11", "ad112b0h9-c11", "ti315b01h-c11", "hu315a00n-802"]
 		},
 		{
 			"category": "Jacken",
 			"article": ["le222h00v-q11", "bh622ha0z-n11"]
-		}]
-	};
+		}
+	];
 
 	var getJSON = function (url, callback) {
 		var xhr = new XMLHttpRequest();
@@ -152,23 +225,24 @@
 	var articleBrand = document.getElementsByClassName('js-article-brand');
 	var articleData = [];
 
-	for (i = 0; i < staticData.staticData.length; i++) {
-		var createCategory = '<h2 class="mod-article__category">' + staticData.staticData[i].category + '</h2>';
-		modArticle.innerHTML += createCategory;
+	for ( var i = 0; i < window.staticData.length; i++) {
+		var createContent = '<h2 class="mod-article__category">' + window.staticData[i].category + '</h2> <div class="clearfix">';
 
-		for (k = 0; k < staticData.staticData[i].article.length; k++) {
-			var createArticle = '<a href="#" target="_blank" class="mod-article__item js-article" data-article="' + staticData.staticData[i].article[k] + '">' +
+		for ( var k = 0; k < window.staticData[i].article.length; k++) {
+			createContent += '<a href="#" target="_blank" class="mod-article__item js-article" data-article="' + window.staticData[i].article[k] + '">' +
 					'<img src="" class="mod-article__image js-article-image" />' +
 					'<img src="" class="mod-article__brand js-article-brand" />' +
 					'<span class="mod-article__headline js-article-headline"></span>' +
 					'<span class="mod-article__price js-article-price"></span>' +
 					'</a>';
-			modArticle.innerHTML += createArticle;
 		}
+
+		createContent += '</div>';
+		modArticle.innerHTML += createContent;
 	}
 
 	setTimeout(function () {
-		for (var i = 0; typeof(article[i]) != 'undefined'; articleData.push(article[i++]));
+		for ( var i = 0; typeof(article[i]) != 'undefined'; articleData.push(article[i++]) );
 
 		articleData.forEach(function (eachArticle, index) {
 			getJSON('https://api.zalando.com/articles/' + eachArticle.dataset.article,
