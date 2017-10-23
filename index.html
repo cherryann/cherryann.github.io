@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>template</title>
+	<title>RAGLETTER - Wir haben dir was rausgelegt.</title>
 
 	<style type="text/css">
 		@import url(https://fonts.googleapis.com/css?family=Raleway:500);
@@ -48,14 +48,17 @@
 			color: #41a485;
 		}
 
-		.mod-article__item:hover  .mod-article__image {
+		.mod-article__item:hover  .mod-article__image-wrapper {
 			border: 3px solid #179bd4;
+		}
+
+		.mod-article__item:hover .layer {
+			opacity: 1;
 		}
 
 		header,
 		.mod-article__price,
-		.mod-article__headline,
-		.mod-article__category {
+		.mod-article__headline {
 			font-family: 'Raleway', Arial, sans-serif;
 			font-size: 16px;
 			text-transform: uppercase;
@@ -65,15 +68,6 @@
 			transition: 0.3s color ease;
 		}
 
-		.mod-article__category {
-			font-family: 'Oswald', Arial, sans-serif;
-			font-size: 20px;
-			margin: 0 20px;
-			padding: 0;
-			color: #191919;
-			position: relative;
-		}
-
 		.mod-article__price {
 			font-family: 'Oswald', Arial, sans-serif;
 			font-size: 20px;
@@ -81,12 +75,17 @@
 			margin-top: 10px;
 		}
 
-		.mod-article__image {
-			width: 100%;
-			height: auto;
+		.mod-article__image-wrapper {
 			margin-bottom: 10px;
 			border: 3px solid #eaeaea;
 			transition: 0.3s border ease;
+			position: relative;
+			background: white;
+		}
+
+		.mod-article__image {
+			width: 100%;
+			height: auto;
 		}
 
 		.mod-article__brand {
@@ -97,6 +96,13 @@
 			right: 10px;
 			transition: 0.3s opacity ease-out;
 			box-shadow: 0 5px 15px 0 rgba(0,0,0,0.15);
+		}
+
+		.mod-article__headline {
+			text-overflow: ellipsis;
+			width: 100%;
+			white-space: nowrap;
+			overflow: hidden;
 		}
 
 		header {
@@ -142,7 +148,7 @@
 			margin: 0 0 7px;
 		}
 		.logo h5 {
-			margin: 0 40px;
+			margin: 0 30px;
 			padding: 5px 0;
 			font-weight: 500;
 			border-top: 4px solid #fff;
@@ -177,6 +183,87 @@
 			height: 0;
 		}
 
+		.mod-article__item.mod-article--not-available {
+			opacity: 0.5;
+			cursor: default;
+			pointer-events: none;
+		}
+
+		.mod-article__item.mod-article--not-available:hover .mod-article__brand {
+			opacity: 1;
+		}
+
+		.mod-article__item.mod-article--not-available:hover .mod-article__headline {
+			color: #191919;
+		}
+
+		.mod-article__item.mod-article--not-available:hover  .mod-article__image-wrapper {
+			border: 3px solid #eaeaea;
+		}
+
+		.layer {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			opacity: 0;
+			transition: 0.3s opacity ease-out;
+		}
+
+		.layer__backdrop {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: black;
+			opacity: 0.5;
+		}
+
+		.layer__content,
+		.layer__headline {
+			color: white;
+			opacity: 1;
+			position: relative;
+			z-index: 1;
+			font-size: 20px;
+		}
+
+		.layer__headline {
+			display: block;
+			margin-bottom: 20px;
+			font-family: 'Raleway', Arial, sans-serif;
+		}
+
+		.layer__content {
+			text-align: left;
+			font-family: 'Oswald', Arial, sans-serif;
+		}
+
+		.label-not-available {
+			font-family: 'Raleway', Arial, sans-serif;
+			color: red;
+			background: white;
+			padding: 10px;
+		}
+
+		.label-not-available-wrapper {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+		}
 	</style>
 </head>
 <body>
@@ -184,23 +271,14 @@
 	<div class="logo">
 		<h6>Est. 2017</h6>
 		<h1>Ragletter</h1>
-		<h5>Unsere Auswahl. Für Dich.</h5>
+		<h5>Wir haben dir was rausgelegt.</h5>
 	</div>
 </header>
-<div class="mod-article" id="modArticle"></div>
+<div class="mod-article clearfix" id="modArticle"></div>
 <footer></footer>
 
 <script type="text/javascript">
-	var staticData = [
-		{
-			"category": "Schuhe",
-			"article": ["pi912ba0k-k11", "ad112b0h9-c11", "ti315b01h-c11", "hu315a00n-802"]
-		},
-		{
-			"category": "Jacken",
-			"article": ["le222h00v-q11", "bh622ha0z-n11"]
-		}
-	];
+	var staticData = ["pi912ba0k-k11", "ad112b0h9-c11", "ti315b01h-c11", "hu315a00n-802", "le222h00v-q11", "bh622ha0z-n11"];
 
 	var getJSON = function (url, callback) {
 		var xhr = new XMLHttpRequest();
@@ -217,50 +295,55 @@
 		xhr.send();
 	};
 
-	var article = document.getElementsByClassName('js-article');
-	var modArticle = document.getElementById('modArticle');
-	var articleHeadline = document.getElementsByClassName('js-article-headline');
-	var articleImage = document.getElementsByClassName('js-article-image');
-	var articlePrice = document.getElementsByClassName('js-article-price');
-	var articleBrand = document.getElementsByClassName('js-article-brand');
-	var articleData = [];
+	window.staticData.forEach(function (eachArticle, index) {
+	getJSON('https://api.zalando.com/articles/' + eachArticle,
+		function (err, data) {
+			var brand = data.brand.logoUrl;
+			var brandname = data.brand.name;
+			var name = data.name;
+			var price = data.units[0].price.formatted;
+			var showUrl = data.shopUrl;
+			var image = data.media.images[0].largeUrl;
+			var createContentTest = '';
 
-	for ( var i = 0; i < window.staticData.length; i++) {
-		var createContent = '<h2 class="mod-article__category">' + window.staticData[i].category + '</h2> <div class="clearfix">';
+			var createContent = '';
 
-		for ( var k = 0; k < window.staticData[i].article.length; k++) {
-			createContent += '<a href="#" target="_blank" class="mod-article__item js-article" data-article="' + window.staticData[i].article[k] + '">' +
-					'<img src="" class="mod-article__image js-article-image" />' +
-					'<img src="" class="mod-article__brand js-article-brand" />' +
-					'<span class="mod-article__headline js-article-headline"></span>' +
-					'<span class="mod-article__price js-article-price"></span>' +
-					'</a>';
-		}
+			if ( data.available ) {
+				createContent += '<a href="'+ showUrl + '" target="_blank" class="mod-article__item">' +
+						'<div class="mod-article__image-wrapper"><img src="'+ image + '" class="mod-article__image" />';
 
-		createContent += '</div>';
-		modArticle.innerHTML += createContent;
-	}
+				createContent += '<span class="layer"><span class="layer__headline">- Verfügbar -</span><span class="layer__content">';
 
-	setTimeout(function () {
-		for ( var i = 0; typeof(article[i]) != 'undefined'; articleData.push(article[i++]) );
+				for ( var u = 0; u < data.units.length; u++) {
+					if ( data.units[u].available === true ) {
+						createContentTest += data.units[u].size + ', ';
+					}
+				}
 
-		articleData.forEach(function (eachArticle, index) {
-			getJSON('https://api.zalando.com/articles/' + eachArticle.dataset.article,
-					function (err, data) {
-						var brand = data.brand.logoUrl;
-						var name = data.name;
-						var price = data.units[0].price.formatted;
-						var showUrl = data.shopUrl;
-						var image = data.media.images[0].largeUrl;
+				createContent += createContentTest.slice( 0, -2 ) + '</span><span class="layer__backdrop"></span></span>';
 
-						article[index].href = showUrl;
-						articleHeadline[index].innerHTML = name;
-						articleImage[index].src = image;
-						articlePrice[index].innerHTML = price;
-						articleBrand[index].src = brand;
-					});
+				createContent += '</div>' +
+						'<img src="'+ brand + '" class="mod-article__brand" />' +
+						'<span class="mod-article__headline">'+ brandname +' - '+ name + '</span>' +
+						'<span class="mod-article__price">'+ price + '</span>';
+
+
+				createContent += '</a>';
+
+			} else {
+				createContent += '<div class="mod-article__item mod-article--not-available">' +
+						'<div class="mod-article__image-wrapper"><span class="label-not-available-wrapper"><span class="label-not-available">Nicht verfügbar</span></span>' +
+						'<img src="'+ image + '" class="mod-article__image" /></div>' +
+						'<img src="'+ brand + '" class="mod-article__brand" />' +
+						'<span class="mod-article__headline">'+ brandname +' - '+ name + '</span>' +
+						'<span class="mod-article__price">'+ price + '</span></div>';
+			}
+
+			modArticle.innerHTML += createContent;
+
 		});
 	});
+
 </script>
 </body>
 </html>
